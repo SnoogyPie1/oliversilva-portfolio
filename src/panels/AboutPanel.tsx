@@ -25,7 +25,7 @@ export function AboutPanel() {
         <div className="md:col-span-5">
           <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-line">
             <img
-              src="/portrait.jpeg"
+              src={`${import.meta.env.BASE_URL}portrait.jpeg`}
               alt="Oliver Silva"
               className="absolute inset-0 h-full w-full object-cover"
               loading="lazy"
