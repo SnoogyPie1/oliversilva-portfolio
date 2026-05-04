@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { ProjectModal } from '@/components/ProjectModal'
 import { projects, type Project } from '@/content/projects'
 
@@ -17,7 +16,7 @@ export function WorkPanel() {
         the case study.
       </p>
 
-      <ul className="mt-12 divide-y divide-line border-y border-line">
+      <ul className="mt-12 divide-y divide-ink/10 border-y border-ink/10">
         {projects.map((p, i) => (
           <li
             key={p.id}
@@ -45,25 +44,6 @@ export function WorkPanel() {
           </li>
         ))}
       </ul>
-
-      {/* Floating preview */}
-      <motion.div
-        initial={false}
-        animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1 : 0.92 }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="pointer-events-none fixed left-[calc(50vw-360px)] top-1/2 z-[60] hidden aspect-[16/10] w-[360px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-lg shadow-2xl md:block"
-      >
-        {projects.map((p) => (
-          <motion.img
-            key={p.id}
-            src={p.cover}
-            alt=""
-            animate={{ opacity: hovered === p.id ? 1 : 0 }}
-            transition={{ duration: 0.4 }}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        ))}
-      </motion.div>
 
       <ProjectModal project={active} onClose={() => setActive(null)} />
     </div>
