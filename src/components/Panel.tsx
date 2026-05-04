@@ -24,25 +24,16 @@ export function Panel({ open, onClose, title, children }: Props) {
   return (
     <AnimatePresence>
       {open && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            onClick={onClose}
-            className="fixed inset-0 z-40 bg-bg/80 backdrop-blur-md"
-          />
-          <motion.aside
-            role="dialog"
-            aria-modal="true"
-            aria-label={title}
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed right-0 top-0 z-50 flex h-[100svh] w-full flex-col overflow-hidden border-l border-line bg-bg md:w-[min(720px,90vw)]"
-          >
+        <motion.aside
+          role="dialog"
+          aria-modal="true"
+          aria-label={title}
+          initial={{ x: '100%' }}
+          animate={{ x: 0 }}
+          exit={{ x: '100%' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed right-0 top-0 z-50 flex h-[100svh] w-full flex-col overflow-hidden border-l border-line bg-bg shadow-[0_0_60px_rgba(0,0,0,0.5)] md:w-[min(560px,45vw)]"
+        >
             <header className="flex items-center justify-between border-b border-line px-6 py-5 md:px-10">
               <p className="text-[11px] uppercase tracking-[0.3em] text-muted">
                 ✦ {title}
@@ -63,7 +54,6 @@ export function Panel({ open, onClose, title, children }: Props) {
               {children}
             </div>
           </motion.aside>
-        </>
       )}
     </AnimatePresence>
   )

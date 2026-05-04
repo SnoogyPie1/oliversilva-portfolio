@@ -4,10 +4,10 @@ import { Panel } from '@/components/Panel'
 import { CardScene } from '@/sections/CardScene'
 import { WorkPanel } from '@/panels/WorkPanel'
 import { AboutPanel } from '@/panels/AboutPanel'
-import { ExperiencePanel } from '@/panels/ExperiencePanel'
+import { FilmsPanel } from '@/panels/FilmsPanel'
 import { ContactPanel } from '@/panels/ContactPanel'
 
-type PanelId = 'work' | 'about' | 'experience' | 'contact' | null
+type PanelId = 'work' | 'about' | 'films' | 'contact' | null
 
 export default function App() {
   const [panel, setPanel] = useState<PanelId>(null)
@@ -16,7 +16,7 @@ export default function App() {
   return (
     <div className="grain vignette relative h-[100svh] overflow-hidden">
       <Cursor />
-      <CardScene onOpenPanel={(p) => setPanel(p)} />
+      <CardScene onOpenPanel={(p) => setPanel(p)} panelOpen={panel !== null} />
 
       <Panel open={panel === 'work'} onClose={close} title="Selected Work">
         <WorkPanel />
@@ -24,8 +24,8 @@ export default function App() {
       <Panel open={panel === 'about'} onClose={close} title="About">
         <AboutPanel />
       </Panel>
-      <Panel open={panel === 'experience'} onClose={close} title="Experience">
-        <ExperiencePanel />
+      <Panel open={panel === 'films'} onClose={close} title="Films">
+        <FilmsPanel />
       </Panel>
       <Panel open={panel === 'contact'} onClose={close} title="Contact">
         <ContactPanel />

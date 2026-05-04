@@ -12,12 +12,13 @@ import { socials } from '@/content/socials'
 import { keywords } from '@/content/keywords'
 
 type Props = {
-  onOpenPanel: (panel: 'work' | 'about' | 'experience' | 'contact') => void
+  onOpenPanel: (panel: 'work' | 'about' | 'films' | 'contact') => void
+  panelOpen?: boolean
 }
 
 const cycling = ['CFX Artist', 'Storyteller', 'Simulator', 'Generalist', 'Craftsman']
 
-export function CardScene({ onOpenPanel }: Props) {
+export function CardScene({ onOpenPanel, panelOpen = false }: Props) {
   const reduce = useReducedMotion()
   const [wordIdx, setWordIdx] = useState(0)
   const [activeKeyword, setActiveKeyword] = useState<string | null>(null)
@@ -143,7 +144,15 @@ export function CardScene({ onOpenPanel }: Props) {
         </motion.div>
       </header>
 
-      {/* The interactive card */}
+      {/* The interactive card (wrapper handles panel shift, inner handles 3D tilt) */}
+      <motion.div
+        animate={{
+          x: panelOpen ? 'calc(min(560px, 45vw) / -2)' : 0,
+          scale: panelOpen ? 0.88 : 1,
+        }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 w-[min(1100px,92vw)]"
+      >
       <motion.div
         ref={cardRef}
         style={
@@ -161,7 +170,7 @@ export function CardScene({ onOpenPanel }: Props) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 w-[min(1100px,92vw)]"
+        className="relative"
       >
         <div className="relative rounded-[28px] border border-ink/10 bg-ink/[0.04] p-8 backdrop-blur-2xl backdrop-saturate-150 [will-change:backdrop-filter] md:p-14">
           {/* Card frame corners */}
@@ -256,9 +265,9 @@ export function CardScene({ onOpenPanel }: Props) {
               onClick={() => onOpenPanel('about')}
             />
             <ActionTile
-              label="Experience"
-              meta="2022 — 2026"
-              onClick={() => onOpenPanel('experience')}
+              label="Films"
+              meta="05 titles"
+              onClick={() => onOpenPanel('films')}
             />
             <ActionTile
               label="Get in touch"
@@ -280,6 +289,7 @@ export function CardScene({ onOpenPanel }: Props) {
             <span className="text-ink/70">{profile.tagline}</span>
           </div>
         </div>
+      </motion.div>
       </motion.div>
 
       {/* Bottom-left: socials rail */}
