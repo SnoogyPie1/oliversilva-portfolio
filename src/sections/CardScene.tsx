@@ -165,7 +165,7 @@ export function CardScene({ onOpenPanel, panelOpen = false }: Props) {
         }
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.9, delay: 1.0, ease: [0.16, 1, 0.3, 1] }}
         className="relative"
       >
         <div className="relative rounded-[28px] border border-ink/10 bg-ink/[0.04] p-8 backdrop-blur-2xl backdrop-saturate-150 [will-change:backdrop-filter] md:p-14">

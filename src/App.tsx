@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Cursor } from '@/components/Cursor'
 import { Panel } from '@/components/Panel'
+import { Splash } from '@/components/Splash'
 import { CardScene } from '@/sections/CardScene'
 import { WorkPanel } from '@/panels/WorkPanel'
 import { AboutPanel } from '@/panels/AboutPanel'
@@ -15,6 +16,7 @@ export default function App() {
 
   return (
     <div className="grain vignette relative h-[100svh] overflow-hidden">
+      <Splash />
       <Cursor />
       <CardScene onOpenPanel={(p) => setPanel(p)} panelOpen={panel !== null} />
 
