@@ -59,27 +59,32 @@ export function FilmsPanel() {
                     transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                     className="overflow-hidden"
                   >
-                    <div className="pb-10 md:pl-16">
+                    <div className="pb-10 md:pl-12">
                       {f.synopsis && (
                         <p className="mb-8 max-w-2xl text-sm leading-relaxed text-ink/70">
                           {f.synopsis}
                         </p>
                       )}
                       <p className="mb-4 text-[11px] uppercase tracking-[0.3em] text-muted">
-                        ✦ Shots — {f.shots.length}
+                        ✦ Frames — {f.shots.length}
                       </p>
-                      <ol className="space-y-5">
-                        {f.shots.map((s) => (
+                      <ol className="space-y-6">
+                        {f.shots.map((s, si) => (
                           <li
-                            key={s.code}
-                            className="grid gap-2 border-l border-line pl-5 md:grid-cols-12 md:gap-6"
+                            key={si}
+                            className="grid gap-4 sm:grid-cols-[140px_1fr] sm:gap-6"
                           >
-                            <span className="md:col-span-2 font-mono text-xs uppercase tracking-widest text-accent">
-                              {s.code}
-                            </span>
-                            <div className="md:col-span-10">
-                              <p className="text-ink/90">{s.description}</p>
-                              <p className="mt-1 text-sm text-muted">{s.task}</p>
+                            <div className="relative aspect-video overflow-hidden rounded-md border border-ink/10 bg-line sm:aspect-[4/3]">
+                              <img
+                                src={s.image}
+                                alt={s.description}
+                                loading="lazy"
+                                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                              />
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-ink/90 leading-snug">{s.description}</p>
+                              <p className="mt-2 text-sm text-muted leading-relaxed">{s.task}</p>
                             </div>
                           </li>
                         ))}

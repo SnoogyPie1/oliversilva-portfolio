@@ -59,6 +59,25 @@
     outline-offset: 3px;
     border-radius: 2px;
   }
+
+  /* Slim, unobtrusive scrollbars (panel) */
+  .scroll-slim {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(242, 239, 231, 0.18) transparent;
+  }
+  .scroll-slim::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scroll-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scroll-slim::-webkit-scrollbar-thumb {
+    background-color: rgba(242, 239, 231, 0.18);
+    border-radius: 999px;
+  }
+  .scroll-slim::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(242, 239, 231, 0.35);
+  }
 }
 
 @layer utilities {

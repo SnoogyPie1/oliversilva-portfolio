@@ -32,9 +32,9 @@ export function Panel({ open, onClose, title, children }: Props) {
           animate={{ x: 0 }}
           exit={{ x: '100%' }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed right-0 top-0 z-50 flex h-[100svh] w-full flex-col overflow-hidden border-l border-line bg-bg shadow-[0_0_60px_rgba(0,0,0,0.5)] md:w-[min(560px,45vw)]"
+          className="fixed right-0 top-0 z-50 flex h-[100svh] w-full flex-col overflow-hidden border-l border-ink/10 bg-bg/55 shadow-[0_0_80px_rgba(0,0,0,0.55)] backdrop-blur-2xl backdrop-saturate-150 supports-[backdrop-filter]:bg-bg/45 sm:w-[min(640px,92vw)] lg:w-[min(720px,55vw)] xl:w-[min(820px,50vw)]"
         >
-            <header className="flex items-center justify-between border-b border-line px-6 py-5 md:px-10">
+            <header className="flex items-center justify-between border-b border-ink/10 px-6 py-5 md:px-10">
               <p className="text-[11px] uppercase tracking-[0.3em] text-muted">
                 ✦ {title}
               </p>
@@ -49,7 +49,7 @@ export function Panel({ open, onClose, title, children }: Props) {
             </header>
             <div
               data-lenis-prevent
-              className="flex-1 overflow-y-auto px-6 py-10 md:px-10 md:py-14"
+              className="scroll-slim flex-1 overflow-y-auto overscroll-contain px-6 py-10 md:px-10 md:py-14"
             >
               {children}
             </div>

@@ -8,7 +8,7 @@ export function AboutPanel() {
         A craftsman of <span className="italic text-accent">digital motion.</span>
       </h2>
 
-      <div className="mt-10 grid gap-12 md:grid-cols-12">
+      <div className="mt-10 grid gap-10 md:grid-cols-12">
         <div className="md:col-span-7">
           <p className="font-display text-[clamp(1.25rem,2vw,1.75rem)] font-light leading-snug text-balance text-ink/90">
             I shape the messy, tactile parts of digital characters —
@@ -23,7 +23,7 @@ export function AboutPanel() {
         </div>
 
         <div className="md:col-span-5">
-          <div className="relative aspect-[4/5] overflow-hidden bg-line">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-line">
             <img
               src="/portrait.jpeg"
               alt="Oliver Silva"
@@ -39,11 +39,11 @@ export function AboutPanel() {
         </div>
       </div>
 
-      <div className="mt-16 border-t border-line pt-12">
+      <div className="mt-14 border-t border-ink/10 pt-10">
         <p className="text-[11px] uppercase tracking-[0.3em] text-muted">
           ✦ Toolbox
         </p>
-        <div className="mt-8 grid gap-10 md:grid-cols-3">
+        <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {skills.map((g) => (
             <div key={g.title}>
               <h3 className="text-[11px] uppercase tracking-[0.3em] text-muted">

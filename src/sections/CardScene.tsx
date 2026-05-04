@@ -145,13 +145,9 @@ export function CardScene({ onOpenPanel, panelOpen = false }: Props) {
       </header>
 
       {/* The interactive card (wrapper handles panel shift, inner handles 3D tilt) */}
-      <motion.div
-        animate={{
-          x: panelOpen ? 'calc(min(560px, 45vw) / -2)' : 0,
-          scale: panelOpen ? 0.88 : 1,
-        }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 w-[min(1100px,92vw)]"
+      <div
+        data-panel-open={panelOpen}
+        className="relative z-10 w-[min(1100px,92vw)] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] data-[panel-open=true]:scale-[0.96] lg:data-[panel-open=true]:-translate-x-[15vw] lg:data-[panel-open=true]:scale-[0.86] xl:data-[panel-open=true]:-translate-x-[14vw]"
       >
       <motion.div
         ref={cardRef}
@@ -290,7 +286,7 @@ export function CardScene({ onOpenPanel, panelOpen = false }: Props) {
           </div>
         </div>
       </motion.div>
-      </motion.div>
+      </div>
 
       {/* Bottom-left: socials rail */}
       <motion.aside
