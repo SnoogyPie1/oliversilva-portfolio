@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ChevronDown, Play } from 'lucide-react'
+import { ChevronDown, Play, ExternalLink } from 'lucide-react'
 import { films, type Shot } from '@/content/films'
 import { VideoModal } from '@/components/VideoModal'
 
@@ -17,31 +17,53 @@ export function FilmsPanel() {
         Films I've helped <span className="italic text-accent">animate.</span>
       </h2>
       <p className="mt-4 max-w-xl text-sm text-muted">
-        Click any title to reveal the shots I worked on.
+        Click a title to watch the trailer · click anywhere else on the row to reveal the shots I worked on.
       </p>
 
-      <ul className="mt-12 divide-y divide-line border-y border-line">
+      <ul className="mt-12 divide-y divide-ink/10 border-y border-ink/10">
         {films.map((f, i) => {
           const isOpen = openIdx === i
           return (
             <li key={f.title}>
-              <button
-                type="button"
+              <div
                 onClick={() => setOpenIdx(isOpen ? null : i)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    setOpenIdx(isOpen ? null : i)
+                  }
+                }}
                 aria-expanded={isOpen}
-                className="group flex w-full items-baseline gap-4 py-6 text-left transition-colors md:gap-8 md:py-8"
+                className="group flex cursor-pointer items-baseline gap-4 py-6 text-left transition-colors md:gap-8 md:py-8"
               >
                 <span className="w-12 shrink-0 text-[11px] uppercase tracking-[0.3em] text-muted">
                   {f.year}
                 </span>
                 <span className="flex-1">
-                  <span
-                    className={`block font-display text-2xl font-light leading-tight transition-colors md:text-4xl ${
-                      isOpen ? 'text-accent' : 'text-ink group-hover:text-accent'
-                    }`}
-                  >
-                    {f.title}
-                  </span>
+                  {f.trailerUrl ? (
+                    <a
+                      href={f.trailerUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className={`inline-flex items-baseline gap-2 font-display text-2xl font-light leading-tight transition-colors md:text-4xl ${
+                        isOpen ? 'text-accent' : 'text-ink hover:text-accent'
+                      }`}
+                    >
+                      {f.title}
+                      <ExternalLink className="h-4 w-4 self-center opacity-50 transition-opacity hover:opacity-100" strokeWidth={1.5} />
+                    </a>
+                  ) : (
+                    <span
+                      className={`block font-display text-2xl font-light leading-tight transition-colors md:text-4xl ${
+                        isOpen ? 'text-accent' : 'text-ink group-hover:text-accent'
+                      }`}
+                    >
+                      {f.title}
+                    </span>
+                  )}
                   <span className="mt-1 block text-xs uppercase tracking-[0.25em] text-muted">
                     {f.role} · {f.studio}
                   </span>
@@ -52,7 +74,7 @@ export function FilmsPanel() {
                   }`}
                   strokeWidth={1.5}
                 />
-              </button>
+              </div>
 
               <AnimatePresence initial={false}>
                 {isOpen && (

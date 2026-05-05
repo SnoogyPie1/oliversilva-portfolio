@@ -22,6 +22,7 @@ export function CardScene({ onOpenPanel, panelOpen = false }: Props) {
   const reduce = useReducedMotion()
   const [wordIdx, setWordIdx] = useState(0)
   const [activeKeyword, setActiveKeyword] = useState<string | null>(null)
+  const [needsMotionPermission, setNeedsMotionPermission] = useState(false)
 
   const cardRef = useRef<HTMLDivElement>(null)
 
@@ -58,6 +59,69 @@ export function CardScene({ onOpenPanel, panelOpen = false }: Props) {
     window.addEventListener('mousemove', onMove)
     return () => window.removeEventListener('mousemove', onMove)
   }, [reduce, mx, my])
+
+  // Device orientation (mobile gyroscope)
+  useEffect(() => {
+    if (reduce) return
+    if (typeof window === 'undefined') return
+    if (!('DeviceOrientationEvent' in window)) return
+
+    const isTouch = window.matchMedia('(pointer: coarse)').matches
+    if (!isTouch) return
+
+    // iOS 13+ requires explicit permission via user gesture
+    const RequestPermission = (
+      DeviceOrientationEvent as unknown as {
+        requestPermission?: () => Promise<'granted' | 'denied'>
+      }
+    ).requestPermission
+
+    const handle = (e: DeviceOrientationEvent) => {
+      // beta: front-to-back tilt (-180..180), gamma: left-to-right (-90..90)
+      const gamma = e.gamma ?? 0
+      const beta = e.beta ?? 0
+      // Map ~±25° tilt to ±0.5
+      const x = Math.max(-0.5, Math.min(0.5, gamma / 50))
+      const y = Math.max(-0.5, Math.min(0.5, (beta - 30) / 50))
+      mx.set(x)
+      my.set(y)
+    }
+
+    if (typeof RequestPermission === 'function') {
+      // iOS — wait for explicit user tap
+      setNeedsMotionPermission(true)
+      return
+    }
+
+    window.addEventListener('deviceorientation', handle)
+    return () => window.removeEventListener('deviceorientation', handle)
+  }, [reduce, mx, my])
+
+  const enableMotion = async () => {
+    const RequestPermission = (
+      DeviceOrientationEvent as unknown as {
+        requestPermission?: () => Promise<'granted' | 'denied'>
+      }
+    ).requestPermission
+    if (typeof RequestPermission !== 'function') return
+    try {
+      const result = await RequestPermission()
+      if (result === 'granted') {
+        const handle = (e: DeviceOrientationEvent) => {
+          const gamma = e.gamma ?? 0
+          const beta = e.beta ?? 0
+          const x = Math.max(-0.5, Math.min(0.5, gamma / 50))
+          const y = Math.max(-0.5, Math.min(0.5, (beta - 30) / 50))
+          mx.set(x)
+          my.set(y)
+        }
+        window.addEventListener('deviceorientation', handle)
+        setNeedsMotionPermission(false)
+      }
+    } catch {
+      setNeedsMotionPermission(false)
+    }
+  }
 
   const activeKw = keywords.find((k) => k.word === activeKeyword)
 
@@ -147,7 +211,7 @@ export function CardScene({ onOpenPanel, panelOpen = false }: Props) {
       {/* The interactive card (wrapper handles panel shift, inner handles 3D tilt) */}
       <div
         data-panel-open={panelOpen}
-        className="relative z-10 w-[min(1100px,92vw)] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] data-[panel-open=true]:scale-[0.96] lg:data-[panel-open=true]:-translate-x-[15vw] lg:data-[panel-open=true]:scale-[0.86] xl:data-[panel-open=true]:-translate-x-[14vw]"
+        className="relative z-10 w-[min(860px,90vw)] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] data-[panel-open=true]:scale-[0.96] lg:data-[panel-open=true]:-translate-x-[15vw] lg:data-[panel-open=true]:scale-[0.86] xl:w-[min(1100px,92vw)] xl:data-[panel-open=true]:-translate-x-[14vw]"
       >
       <motion.div
         ref={cardRef}
@@ -168,15 +232,15 @@ export function CardScene({ onOpenPanel, panelOpen = false }: Props) {
         transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         className="relative"
       >
-        <div className="relative rounded-[28px] border border-ink/10 bg-ink/[0.04] p-8 backdrop-blur-2xl backdrop-saturate-150 [will-change:backdrop-filter] md:p-14">
+        <div className="relative rounded-[24px] border border-ink/10 bg-ink/[0.04] p-5 backdrop-blur-2xl backdrop-saturate-150 [will-change:backdrop-filter] sm:p-7 lg:rounded-[28px] lg:p-9 xl:p-14">
           {/* Eyebrow */}
-          <p className="mb-8 flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-muted">
+          <p className="mb-5 flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-muted lg:mb-8">
             <span className="h-px w-8 bg-accent" />
             Interactive card · Hover any keyword
           </p>
 
           {/* Headline */}
-          <h1 className="font-display text-[clamp(2.5rem,7.5vw,7rem)] font-light leading-[0.95]">
+          <h1 className="font-display text-[clamp(2rem,4.8vw,4.75rem)] font-light leading-[0.95] xl:text-[clamp(2.5rem,7vw,6.5rem)]">
             <span className="block text-ink/90">Passionate</span>
             <span className="relative block h-[1em] overflow-hidden">
               <AnimatePresence mode="wait">
@@ -196,7 +260,7 @@ export function CardScene({ onOpenPanel, panelOpen = false }: Props) {
           </h1>
 
           {/* Keyword strip */}
-          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-[clamp(0.95rem,1.4vw,1.15rem)]">
+          <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-3 text-[clamp(0.85rem,1.05vw,1.05rem)] lg:mt-8">
             <span className="text-[11px] uppercase tracking-[0.3em] text-muted">
               Specialties
             </span>
@@ -240,10 +304,10 @@ export function CardScene({ onOpenPanel, panelOpen = false }: Props) {
           </div>
 
           {/* Divider */}
-          <div className="my-10 h-px w-full bg-line" />
+          <div className="my-6 h-px w-full bg-line lg:my-10" />
 
           {/* Action grid */}
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
             <ActionTile
               label="Selected work"
               meta="06 projects"
@@ -268,7 +332,7 @@ export function CardScene({ onOpenPanel, panelOpen = false }: Props) {
           </div>
 
           {/* Footer line */}
-          <div className="mt-10 flex flex-wrap items-center justify-between gap-4 text-[11px] uppercase tracking-[0.3em] text-muted">
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 text-[11px] uppercase tracking-[0.3em] text-muted lg:mt-10">
             <div className="flex items-center gap-3">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
@@ -317,6 +381,20 @@ export function CardScene({ onOpenPanel, panelOpen = false }: Props) {
         <span className="block h-px w-10 bg-ink/30" />
         <span>Move · hover · click</span>
       </motion.div>
+
+      {/* Mobile: enable motion (iOS 13+) */}
+      {needsMotionPermission && (
+        <motion.button
+          type="button"
+          onClick={enableMotion}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.6 }}
+          className="absolute bottom-6 left-1/2 z-30 -translate-x-1/2 rounded-full border border-ink/20 bg-bg/70 px-4 py-2 text-[10px] uppercase tracking-[0.25em] text-ink backdrop-blur-md transition hover:border-accent hover:bg-accent hover:text-bg md:hidden"
+        >
+          Tilt your phone — enable motion
+        </motion.button>
+      )}
     </section>
   )
 }
@@ -333,7 +411,7 @@ function ActionTile({ label, meta, accent, onClick }: ActionTileProps) {
     <button
       type="button"
       onClick={onClick}
-      className={`group relative flex flex-col items-start gap-2 overflow-hidden rounded-2xl border p-5 text-left transition-all duration-500 ${
+      className={`group relative flex flex-col items-start gap-1.5 overflow-hidden rounded-2xl border p-4 text-left transition-all duration-500 lg:gap-2 lg:p-5 ${
         accent
           ? 'border-accent/40 bg-accent/5 hover:bg-accent hover:text-ink'
           : 'border-ink/10 bg-ink/[0.02] hover:border-ink/40 hover:bg-ink/[0.05]'

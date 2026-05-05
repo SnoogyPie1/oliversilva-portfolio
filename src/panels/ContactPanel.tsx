@@ -43,12 +43,12 @@ export function ContactPanel() {
 
       <a
         href={`mailto:${profile.email}`}
-        className="mt-10 inline-block font-display text-[clamp(1.5rem,3vw,2.5rem)] underline-offset-8 hover:underline"
+        className="mt-6 inline-block font-display text-[clamp(1.25rem,2.4vw,2rem)] underline-offset-8 hover:underline"
       >
         {profile.email}
       </a>
 
-      <div className="mt-10 flex flex-wrap gap-3">
+      <div className="mt-6 flex flex-wrap gap-3">
         {socials.map((s) => {
           const isExternal = /^https?:/.test(s.href)
           return (
@@ -67,16 +67,16 @@ export function ContactPanel() {
         })}
       </div>
 
-      <form onSubmit={onSubmit} className="mt-14 flex flex-col gap-6 border-t border-line pt-12">
+      <form onSubmit={onSubmit} className="mt-10 flex flex-col gap-5 border-t border-ink/10 pt-8">
         <Field label="Name" name="name" type="text" required />
         <Field label="Email" name="email" type="email" required />
         <Field label="Message" name="message" textarea required />
 
-        <div className="flex flex-wrap items-center gap-4 pt-4">
+        <div className="flex flex-wrap items-center gap-4 pt-2">
           <button
             type="submit"
             disabled={status === 'submitting'}
-            className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-medium text-ink transition-all duration-300 hover:bg-ink hover:text-bg disabled:opacity-60"
+            className="group inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-medium text-ink transition-all duration-300 hover:bg-ink hover:text-bg disabled:opacity-60"
           >
             {status === 'submitting' ? 'Sending…' : 'Send message →'}
           </button>
@@ -107,7 +107,7 @@ function Field({ label, name, type = 'text', required, textarea }: FieldProps) {
     <label className="flex flex-col gap-2">
       <span className="text-[11px] uppercase tracking-[0.3em] text-muted">{label}</span>
       {textarea ? (
-        <textarea name={name} required={required} rows={4} className={baseClass} />
+        <textarea name={name} required={required} rows={3} className={baseClass} />
       ) : (
         <input name={name} type={type} required={required} className={baseClass} />
       )}

@@ -18,13 +18,13 @@ export function WorkPanel() {
 
       <ul className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2">
         {projects.map((p, i) => (
-          <li key={p.id}>
+          <li key={p.id} className={i === 0 ? 'sm:col-span-2' : undefined}>
             <button
               type="button"
               onClick={() => setActive(p)}
               className="group block w-full text-left"
             >
-              <div className="relative aspect-[4/3] overflow-hidden rounded-md border border-ink/10 bg-line">
+              <div className={`relative overflow-hidden rounded-md border border-ink/10 bg-line ${i === 0 ? 'aspect-[16/9]' : 'aspect-[4/3]'}`}>
                 <img
                   src={p.cover}
                   alt={p.title}
@@ -44,7 +44,9 @@ export function WorkPanel() {
                 </span>
 
                 <div className="absolute inset-x-0 bottom-0 p-4">
-                  <h3 className="font-display text-xl font-light leading-tight text-ink transition-colors duration-300 group-hover:text-accent md:text-2xl">
+                  <h3 className={`font-display font-light leading-tight text-ink transition-colors duration-300 group-hover:text-accent ${
+                    i === 0 ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'
+                  }`}>
                     {p.title}
                   </h3>
                   <p className="mt-1 text-[10px] uppercase tracking-[0.25em] text-muted">

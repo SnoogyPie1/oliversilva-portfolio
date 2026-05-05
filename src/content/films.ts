@@ -13,6 +13,8 @@ export type Film = {
   role: string
   poster?: string
   synopsis?: string
+  /** YouTube (or other) trailer URL — opens in new tab when title is clicked */
+  trailerUrl?: string
   shots: Shot[]
 }
 
@@ -23,6 +25,7 @@ export const films: Film[] = [
     year: '2025',
     studio: 'Studio Alpha',
     role: 'Senior CFX Artist',
+    trailerUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     synopsis:
       'A coastal town swallowed by a sentient ocean. Hero cloth & hair work on the lead siren creature.',
     shots: [
@@ -54,6 +57,7 @@ export const films: Film[] = [
     year: '2024',
     studio: 'Studio Alpha',
     role: 'CFX Artist',
+    trailerUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     synopsis:
       'Industrial-era fairy tale. Period costume work and creature fur for the wolf chorus.',
     shots: [
@@ -92,6 +96,7 @@ export const films: Film[] = [
     year: '2024',
     studio: 'Studio Beta',
     role: 'CFX Artist',
+    trailerUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     synopsis:
       'Animated short about an astronomer who folds the night sky. Stylized origami simulation.',
     shots: [
@@ -116,6 +121,7 @@ export const films: Film[] = [
     year: '2023',
     studio: 'Studio Beta',
     role: 'CFX Artist',
+    trailerUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     synopsis:
       'Sci-fi feature about a black-coated assassin who erases light. Hero suit work throughout.',
     shots: [
@@ -147,6 +153,7 @@ export const films: Film[] = [
     year: '2022',
     studio: 'Studio Gamma',
     role: '3D Generalist',
+    trailerUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     synopsis:
       'Anthology short. Cross-discipline contribution — modeling, lookdev, and simulation.',
     shots: [
