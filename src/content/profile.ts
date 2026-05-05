@@ -8,7 +8,7 @@ export const profile = {
 last few years I've helped shape visuals on feature films and high-end commercials,
 specializing in cloth, hair and skin simulation. I love the messy, tactile parts of
 production — the moment a digital character starts to feel alive.`,
-  resumeUrl: '/cv-placeholder.pdf',
+  resumeUrl: 'cv-oliver-silva.pdf',
 }
 
 export const highlights = [

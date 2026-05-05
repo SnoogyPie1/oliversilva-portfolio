@@ -1,10 +1,15 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ChevronDown } from 'lucide-react'
-import { films } from '@/content/films'
+import { ChevronDown, Play } from 'lucide-react'
+import { films, type Shot } from '@/content/films'
+import { VideoModal } from '@/components/VideoModal'
 
 export function FilmsPanel() {
   const [openIdx, setOpenIdx] = useState<number | null>(0)
+  const [activeShot, setActiveShot] = useState<Shot | null>(null)
+
+  const resolveVideo = (v?: string) =>
+    v ? `${import.meta.env.BASE_URL}films/${v}` : null
 
   return (
     <div>
@@ -69,25 +74,46 @@ export function FilmsPanel() {
                         ✦ Frames — {f.shots.length}
                       </p>
                       <ol className="space-y-6">
-                        {f.shots.map((s, si) => (
-                          <li
-                            key={si}
-                            className="grid gap-4 sm:grid-cols-[140px_1fr] sm:gap-6"
-                          >
-                            <div className="relative aspect-video overflow-hidden rounded-md border border-ink/10 bg-line sm:aspect-[4/3]">
-                              <img
-                                src={s.image}
-                                alt={s.description}
-                                loading="lazy"
-                                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-                              />
-                            </div>
-                            <div className="min-w-0">
-                              <p className="text-ink/90 leading-snug">{s.description}</p>
-                              <p className="mt-2 text-sm text-muted leading-relaxed">{s.task}</p>
-                            </div>
-                          </li>
-                        ))}
+                        {f.shots.map((s, si) => {
+                          const hasVideo = Boolean(s.video)
+                          return (
+                            <li
+                              key={si}
+                              className="grid gap-4 sm:grid-cols-[140px_1fr] sm:gap-6"
+                            >
+                              <button
+                                type="button"
+                                onClick={() => hasVideo && setActiveShot(s)}
+                                disabled={!hasVideo}
+                                aria-label={hasVideo ? `Play shot — ${s.description}` : s.description}
+                                className={`group relative aspect-video overflow-hidden rounded-md border border-ink/10 bg-line sm:aspect-[4/3] ${
+                                  hasVideo ? 'cursor-pointer' : 'cursor-default'
+                                }`}
+                              >
+                                <img
+                                  src={s.image}
+                                  alt={s.description}
+                                  loading="lazy"
+                                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                />
+                                {hasVideo && (
+                                  <>
+                                    <span className="absolute inset-0 bg-bg/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                                    <span className="absolute inset-0 flex items-center justify-center">
+                                      <span className="flex h-10 w-10 items-center justify-center rounded-full border border-ink/40 bg-bg/60 text-ink backdrop-blur-md transition-all duration-300 group-hover:scale-110 group-hover:border-accent group-hover:bg-accent group-hover:text-bg">
+                                        <Play className="h-4 w-4 translate-x-[1px]" strokeWidth={1.5} fill="currentColor" />
+                                      </span>
+                                    </span>
+                                  </>
+                                )}
+                              </button>
+                              <div className="min-w-0">
+                                <p className="text-ink/90 leading-snug">{s.description}</p>
+                                <p className="mt-2 text-sm text-muted leading-relaxed">{s.task}</p>
+                              </div>
+                            </li>
+                          )
+                        })}
                       </ol>
                     </div>
                   </motion.div>
@@ -97,6 +123,14 @@ export function FilmsPanel() {
           )
         })}
       </ul>
+
+      <VideoModal
+        open={Boolean(activeShot)}
+        src={resolveVideo(activeShot?.video)}
+        poster={activeShot?.image}
+        caption={activeShot?.description}
+        onClose={() => setActiveShot(null)}
+      />
     </div>
   )
 }

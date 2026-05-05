@@ -7,7 +7,7 @@ type Props = {
   hold?: number
 }
 
-export function Splash({ hold = 1100 }: Props) {
+export function Splash({ hold = 1500 }: Props) {
   const [show, setShow] = useState(true)
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export function Splash({ hold = 1100 }: Props) {
             <motion.div
               initial={{ x: '-100%' }}
               animate={{ x: '100%' }}
-              transition={{ duration: 1.1, ease: 'easeInOut' }}
+              transition={{ duration: 1.4, ease: 'easeInOut' }}
               className="h-full w-1/3 bg-accent"
             />
           </div>
@@ -48,7 +48,7 @@ export function Splash({ hold = 1100 }: Props) {
             <motion.span
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 0.9, ease: [0.65, 0, 0.35, 1] }}
+              transition={{ duration: 1.2, ease: [0.65, 0, 0.35, 1] }}
               className="block h-px w-32 origin-left bg-ink/40"
             />
 

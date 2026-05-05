@@ -1,7 +1,9 @@
 import { profile } from '@/content/profile'
 import { skills } from '@/content/skills'
+import { Download } from 'lucide-react'
 
 export function AboutPanel() {
+  const cvHref = `${import.meta.env.BASE_URL}${profile.resumeUrl}`
   return (
     <div>
       <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] font-light leading-[1.05]">
@@ -20,6 +22,16 @@ export function AboutPanel() {
             {profile.bio}
           </p>
           <p className="mt-6 text-sm text-muted">{profile.location}</p>
+
+          <a
+            href={cvHref}
+            download
+            className="group mt-8 inline-flex items-center gap-3 rounded-full border border-ink/20 bg-ink/[0.03] px-5 py-2.5 text-sm text-ink transition-all duration-300 hover:border-accent hover:bg-accent hover:text-bg"
+          >
+            <Download className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5" strokeWidth={1.5} />
+            Download CV
+            <span className="text-[10px] uppercase tracking-[0.25em] opacity-60">PDF</span>
+          </a>
         </div>
 
         <div className="md:col-span-5">
