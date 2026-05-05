@@ -169,12 +169,6 @@ export function CardScene({ onOpenPanel, panelOpen = false }: Props) {
         className="relative"
       >
         <div className="relative rounded-[28px] border border-ink/10 bg-ink/[0.04] p-8 backdrop-blur-2xl backdrop-saturate-150 [will-change:backdrop-filter] md:p-14">
-          {/* Card frame corners */}
-          <Corner className="left-3 top-3" />
-          <Corner className="right-3 top-3 rotate-90" />
-          <Corner className="right-3 bottom-3 rotate-180" />
-          <Corner className="left-3 bottom-3 -rotate-90" />
-
           {/* Eyebrow */}
           <p className="mb-8 flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-muted">
             <span className="h-px w-8 bg-accent" />
@@ -327,15 +321,6 @@ export function CardScene({ onOpenPanel, panelOpen = false }: Props) {
   )
 }
 
-function Corner({ className = '' }: { className?: string }) {
-  return (
-    <span
-      aria-hidden
-      className={`pointer-events-none absolute h-4 w-4 border-l border-t border-ink/40 ${className}`}
-    />
-  )
-}
-
 type ActionTileProps = {
   label: string
   meta: string
@@ -359,14 +344,6 @@ function ActionTile({ label, meta, accent, onClick }: ActionTileProps) {
       </span>
       <span className="font-display text-xl font-light">
         {label}
-      </span>
-      <span
-        aria-hidden
-        className={`absolute right-4 top-4 text-base transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1 ${
-          accent ? '' : 'text-muted group-hover:text-ink'
-        }`}
-      >
-        ↗
       </span>
     </button>
   )
